@@ -55,6 +55,15 @@ function ReactFlowRenderer() {
     },
     [setNodes]
   );
+
+  const onDeleteNode = (id) => {
+    setNodes((nds) => nds.filter((node) => node.id !== id));
+    // Also remove any connected edges associated with the deleted node
+    setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+  };
+  const onDeleteEdge = (id) => {
+    setEdges((eds) => eds.filter((edge) => edge.id !== id));
+  };
   return (
     <div style={{ height: "100vh", margin: "10px" }}>
       <Modal
@@ -87,6 +96,9 @@ function ReactFlowRenderer() {
         fitView
         attributionPosition="bottom-left"
         connectionLineType={ConnectionLineType.SmoothStep}
+        onDeleteNode={onDeleteNode}
+        deleteKeyCode={46}
+        onDeleteEdge={onDeleteEdge}
       />
     </div>
   );
